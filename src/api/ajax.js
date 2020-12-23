@@ -1,6 +1,7 @@
 // 封装ajax请求
 import axios from 'axios'
 
+
 export default function ajax(url = '', data = {}, type = 'GET') {
     // 在外部有封装了一个promise对象
   return new Promise(function (resolve, reject) {
