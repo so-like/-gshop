@@ -4,7 +4,7 @@
           <li class="shop_li border-1px" v-for="(shop,index) in shops" :key="index">
             <a>
               <div class="shop_left">
-                <img class="shop_img" src="./images/shop/1.jpg">
+                <img class="shop_img" :src="baseImageurl + shop.image_path">
               </div>
               <div class="shop_right">
                 <section class="shop_detail_header">
