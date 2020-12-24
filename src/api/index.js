@@ -20,16 +20,16 @@ export const reqSearchShops = (geohash,keyword) => ajax(BASE_URL+`/search_shops`
 export const reqCaptcha = () => ajax(`/captcha`)
 
 // [6、用户名密码登陆](#6用户名密码登陆)<br/>
-export const reqLogin = (name,pwd,captcha) => ajax(`/login_pwd`,{name,pwd,captcha})
+export const reqLogin = (name,pwd,captcha) => ajax(BASE_URL+`/login_pwd`,{name,pwd,captcha})
 
 // [7、发送短信验证码](#7发送短信验证码)<br/>
-export const reqPhone = (phone) => ajax(`/sendcode`,phone)
+export const reqPhone = (phone) => ajax(BASE_URL+`/sendcode`,phone)
 
 // [8、手机号验证码登陆](#8手机号验证码登陆)<br/>
-export const reqLoginPhone = (phone,code) => ajax(`/login_sms`,{phone,code})
+export const reqLoginPhone = (phone,code) => ajax(BASE_URL+`/login_sms`,{phone,code})
 
 // [9、根据会话获取用户信息](#9根据会话获取用户信息)<br/>
-export const reqUserInfo = () => ajax(`/userinfo`)
+export const reqUserInfo = () => ajax(BASE_URL+`/userinfo`)
 
 // [10、用户登出](#10用户登出)<br/>
-export const reqLoginOut = () => ajax(`/logout`)
+export const reqLoginOut = () => ajax(BASE_URL+`/logout`)

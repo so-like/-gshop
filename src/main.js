@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+// 注册store
+import store from './store'
 
 
 Vue.config.productionTip = false
@@ -11,7 +13,8 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
+  router, //使用vue-router
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  store //使用vuex
 })

@@ -7,12 +7,18 @@
 
 <script>
 import FooterGuide from './components/FooterGuide/FooterGuide'
+// 引入映射函数
+import {mapActions} from 'vuex'
 import {reqFoodTypes} from './api/index'
 export default {
   name: 'App',
-  async mounted() {
-    const result = await reqFoodTypes()
-    console.log(result);
+  mounted() {
+    // 发送异步请求获取地址
+    // this.$store.dispatch('getAddress')
+    this.getAddress()
+  },
+  methods: {
+    ...mapActions(['getAddress'])
   },
   components:{
     FooterGuide,
