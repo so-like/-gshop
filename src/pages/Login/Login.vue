@@ -103,6 +103,7 @@
                   src="http://localhost:4000/captcha"
                   alt="captcha"
                   @click="getCaptcha"
+                  ref="captcha"
                 />
               </section>
             </section>
@@ -180,9 +181,9 @@ export default {
       this.alertText = "";
     },
     // 更换验证码
-    getCaptcha(event) {
+    getCaptcha() {
       // 点击图片绑定监听事件，改变请求路径 方法是加上当时间件戳 因为是src请求所以不存在跨域
-      event.target.src = "http://localhost:4000/captcha?time=" + Date.now();
+      this.$refs.captcha.src = "http://localhost:4000/captcha?time=" + Date.now();
     },
     // 异步登录
     async login() {
@@ -250,6 +251,7 @@ export default {
         }else{
           const msg = result.msg
           // 显示提示
+          this.getCaptcha()
           this.showAlert(msg)
         }
 
