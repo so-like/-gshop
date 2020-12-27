@@ -16,9 +16,10 @@ export default {
     // 发送异步请求获取地址
     // this.$store.dispatch('getAddress')
     this.getAddress()
+    this.getUserInfo()
   },
   methods: {
-    ...mapActions(['getAddress'])
+    ...mapActions(['getAddress','getUserInfo'])
   },
   components:{
     FooterGuide,

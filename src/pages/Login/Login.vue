@@ -245,12 +245,14 @@ export default {
         if(result.code == 0){
           const user = result.data
           // 将user保存到vuex得state中
+          this.$store.dispatch('recordUser', user);
 
           // 跳转路由到个人中心页面
           this.$router.replace('/personal')
         }else{
           const msg = result.msg
           // 显示提示
+          // 调取更新图片验证码
           this.getCaptcha()
           this.showAlert(msg)
         }

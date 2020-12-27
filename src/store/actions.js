@@ -4,14 +4,18 @@
 import {
     RECEIVE_ADDRESS,
     RECEIVE_CATEGORYS,
-    RECEIVE_SHOPS
+    RECEIVE_SHOPS,
+    RECEIVE_USER_INFO,
+    RESET_USER_INFO
 } from './mutation-types'
 
 // 在这引入接口api中的方法
 import {
     reqAddress,
     reqFoodTypes,
-    reqShopList
+    reqShopList,
+    reqUserInfo,
+    reqLoginOut
 }from '../api'
 
 export default{
@@ -59,4 +63,27 @@ export default{
             commit(RECEIVE_SHOPS,{shops})
         }
     },
+
+    // 同步获取用户信息(因为我手里有用户信息)
+    recordUser({commit},userInfo){
+        commit(RECEIVE_USER_INFO,{userInfo})
+    },
+
+    // 异步获取用户信息
+    async getUserInfo({commit}){
+        // 调用获取用户信息的方法
+        const result = await reqUserInfo()
+        if(result.code == 0){
+            const userInfo = result.data
+            commit(RECEIVE_USER_INFO,{userInfo})
+        }
+    },
+
+    // 异步请求退出
+    async logout({commit}){
+        const result = await reqLoginOut()
+        if(result.code === 0){
+            commit(RESET_USER_INFO)
+        }
+    }
 }

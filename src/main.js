@@ -5,7 +5,11 @@ import App from './App'
 import router from './router'
 // 注册store
 import store from './store'
+import {Button} from 'mint-ui'
 
+
+// 注册全局组件标签
+Vue.component(Button.name,Button)  //<mt-button>
 
 Vue.config.productionTip = false
 

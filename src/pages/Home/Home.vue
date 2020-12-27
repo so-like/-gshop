@@ -4,13 +4,18 @@
     <!-- 通过props实现组件间的信息传递 -->
     <HeaderTop :title="address.name">
       <!-- 搜索 -->
-      <a class="header_search" slot="left">
+      <router-link class="header_search" slot="left" to="/search">
         <i class="iconfont icon-sousuo"></i>
-      </a>
+      </router-link>
       <!-- 登录注册 -->
-      <a class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
-      </a>
+      <router-link class="header_login" slot="right" :to="userInfo._id ? '/personal': '/login'">
+        <span class="header_login_text" v-if="!userInfo._id">
+          登录|注册
+          </span>
+        <span class="header_login_text" v-else>
+          <i class="iconfont icon-yonghu"></i>
+        </span>
+      </router-link>
     </HeaderTop>
 
     <!--首页导航-->
@@ -67,8 +72,8 @@ export default {
   },
   // 计算属性
   computed:{
-    // 通过store中的state经纬度来读取地址
-    ...mapState(['address','categorys']),
+    // 通过store中的state经纬度来读取地址 用户信息等等
+    ...mapState(['address','categorys','userInfo']),
 
     // 根据categorys这个一维数组来创建一个二维数组
     categorysArr(){
