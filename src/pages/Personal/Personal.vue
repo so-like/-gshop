@@ -114,7 +114,7 @@
 
 <script>
 // 引入组件
-import { MessageBox } from 'mint-ui'
+import { MessageBox,Toast } from 'mint-ui'
 import {mapState} from 'vuex'
 import HeaderTop from '../../components/HeaderTop/HeaderTop'
 export default {
@@ -130,6 +130,7 @@ export default {
         action => {
           // 请求退出
           this.$store.dispatch('logout')
+          Toast('退出成功')
         },
         // 点击取消调用
         action => {
