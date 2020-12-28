@@ -6,6 +6,7 @@ import router from './router'
 // 注册store
 import store from './store'
 import {Button} from 'mint-ui'
+import './mock/mockServer'
 
 
 // 注册全局组件标签
