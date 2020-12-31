@@ -112,13 +112,14 @@ export default {
     }
   },
 
-  // 异步获取商家商品列表
-  async getShopGoods({ commit }) {
+  // 异步获取商家商品列表 接收传过来的函数并在数据更新后调用
+  async getShopGoods({ commit },callback) {
     const result = await reqShopGoods();
     if (result.code === 0) {
       const goods = result.data;
       commit(RECEIVE_GOODS, { goods });
       // 如果组件中传递了接收消息的回调函数, 数据更新后, 调用回调通知调用的组件
+      callback && callback()
     }
   }
 };
