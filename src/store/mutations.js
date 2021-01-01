@@ -55,7 +55,10 @@ export default {
       // food.count = 1    这样修改值是没有数据绑定的 
       // 引入vue 第一个参数为对象 第二个参数为属性名要加引号 第三个为值 这样就会有了数据绑定
       Vue.set(food,'count',1)
+      // 将food添加到state的shopCart中
+      state.cartFoods.push(food)
     }else{
+      // 因为为引用对象所以这里添加它看得见
       food.count++
     }
   },
@@ -64,6 +67,10 @@ export default {
   [DECREMENT_FOOD_COUNT](state, { food }) {
     if(food.count){
       food.count--
+      if(food.count===0){
+        // 删除food在cartFood中的下标 删除一个
+        state.cartFoods.splice(state.cartFoods.indexOf(food),1)
+      }
     }
   },
 };
