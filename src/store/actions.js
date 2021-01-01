@@ -9,7 +9,9 @@ import {
   RESET_USER_INFO,
   RECEIVE_RATINGS,
   RECEIVE_INFO,
-  RECEIVE_GOODS
+  RECEIVE_GOODS,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from "./mutation-types";
 
 // 在这引入接口api中的方法
@@ -121,5 +123,15 @@ export default {
       // 如果组件中传递了接收消息的回调函数, 数据更新后, 调用回调通知调用的组件
       callback && callback()
     }
+  },
+
+  // 同步修改good中的food的count
+  updateFoodCount({commit},{isAdd,food}){
+    if(isAdd){
+      commit(INCREMENT_FOOD_COUNT,{food})
+    }else{
+      commit(DECREMENT_FOOD_COUNT,{food})
+    }
   }
+
 };

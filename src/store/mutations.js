@@ -1,5 +1,6 @@
 // 直接更新state的多个方法的对象
 // 首先从mutation-types中引入所定义的类型
+import Vue from 'vue'
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
@@ -9,6 +10,8 @@ import {
   RECEIVE_GOODS,
   RECEIVE_INFO,
   RECEIVE_RATINGS,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT,
 } from "./mutation-types";
 export default {
   [RECEIVE_ADDRESS](state, { address }) {
@@ -44,5 +47,23 @@ export default {
 
   [RECEIVE_GOODS](state, { goods }) {
     state.goods = goods;
-  }
+  },
+
+  // 修改父组件中的food的count数据 添加食物的数量
+  [INCREMENT_FOOD_COUNT](state, { food }) {
+    if(!food.count){//第一次点击为1
+      // food.count = 1    这样修改值是没有数据绑定的 
+      // 引入vue 第一个参数为对象 第二个参数为属性名要加引号 第三个为值 这样就会有了数据绑定
+      Vue.set(food,'count',1)
+    }else{
+      food.count++
+    }
+  },
+  
+  // 减少食物的数量
+  [DECREMENT_FOOD_COUNT](state, { food }) {
+    if(food.count){
+      food.count--
+    }
+  },
 };

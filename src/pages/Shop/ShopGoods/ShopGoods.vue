@@ -3,7 +3,13 @@
     <div class="goods">
       <div class="menu-wrapper">
         <ul>
-          <li class="menu-item" v-for="(good, index) in goods" :key="index" :class="{current:currentIndex===index}">
+          <li
+            class="menu-item"
+            v-for="(good, index) in goods"
+            :key="index"
+            :class="{ current: currentIndex === index }"
+            @click="clickMenuItem(index)"
+          >
             <!-- 如果商品没有图标那么就不解析显示 -->
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon" />
@@ -25,6 +31,7 @@
                 class="food-item bottom-border-1px"
                 v-for="(food, index) in good.foods"
                 :key="index"
+                @click="showFood(food)"
               >
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon" />
@@ -43,30 +50,7 @@
                     >
                   </div>
                   <div class="cartcontrol-wrapper">
-                    CartControl组件
-                  </div>
-                </div>
-              </li>
-              <li class="food-item bottom-border-1px">
-                <div class="icon">
-                  <img
-                    width="57"
-                    height="57"
-                    src="http://fuss10.elemecdn.com/d/22/260bd78ee6ac6051136c5447fe307jpeg.jpeg?imageView2/1/w/114/h/114"
-                  />
-                </div>
-                <div class="content">
-                  <h2 class="name">红豆薏米美肤粥</h2>
-                  <p class="desc">甜粥</p>
-                  <div class="extra">
-                    <span class="count">月售86份</span>
-                    <span>好评率100%</span>
-                  </div>
-                  <div class="price">
-                    <span class="now">￥12</span>
-                  </div>
-                  <div class="cartcontrol-wrapper">
-                    CartControl组件
+                    <CartControl :food="food" />
                   </div>
                 </div>
               </li>
@@ -75,17 +59,21 @@
         </ul>
       </div>
     </div>
+    <Food :food="food" ref="food"/>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import BScroll from "better-scroll";
+import CartControl from "../../../components/CartControl/CartControl";
+import Food from "../../../components/Food/Food";
 export default {
   data() {
     return {
       scrollY: 0, //右侧滑动的Y轴坐标
-      tops: [] //所有右侧分类li的top组成的数组，列表第一次显示后就不再变化
+      tops: [], //所有右侧分类li的top组成的数组，列表第一次显示后就不再变化
+      food: {}
     };
   },
   mounted() {
@@ -95,9 +83,8 @@ export default {
       this.$nextTick(() => {
         //列表数据更新之后调用
 
-        this._initScroll()
-        this._initTops()
-
+        this._initScroll();
+        this._initTops();
       });
     });
   },
@@ -106,57 +93,82 @@ export default {
     // 计算得到当前分类的下标
     currentIndex() {
       // 1.得到条件数据
-      const {scrollY,tops} = this
+      const { scrollY, tops } = this;
       // 2.根据条件数据计算
-      const index = tops.findIndex((top,index) => {
+      const index = tops.findIndex((top, index) => {
         // scrollY>=当前top && scrollY小于下一个top
-       return scrollY>=top && scrollY<tops[index+1]
-      })
+        return scrollY >= top && scrollY < tops[index + 1];
+      });
       // 3.返回结果
-      return index
+      return index;
     }
   },
+
   methods: {
     // 初始化滚动条
     _initScroll() {
       // 将menu-wrapper设置为滑动条
-      const menuScroll = new BScroll(".menu-wrapper", {});
-      const foodsScroll = new BScroll(".foods-wrapper", {
-        probeType: 2 //因为惯性的滑动是不会更新数据的
+      const menuScroll = new BScroll(".menu-wrapper", {
+        // 配置默认事件
+        click: true
+      });
+      this.foodsScroll = new BScroll(".foods-wrapper", {
+        probeType: 2, //因为惯性的滑动是不会更新数据的
+        click: true
       });
       // 给右侧列表绑定scroll监听
-      foodsScroll.on("scroll", ({ x, y }) => {
+      this.foodsScroll.on("scroll", ({ x, y }) => {
         console.log(x, y);
         // 滑动变化也会有负值 所以取绝对值
         this.scrollY = Math.abs(y);
       });
-       // 绑定滚动结束的监听
-      foodsScroll.on("scrollEnd", ({ x, y }) => {
-        console.log("scrollEnd",x, y);
+      // 绑定滚动结束的监听
+      this.foodsScroll.on("scrollEnd", ({ x, y }) => {
+        console.log("scrollEnd", x, y);
         // 滑动变化也会有负值 所以取绝对值
         this.scrollY = Math.abs(y);
-      })
+      });
     },
 
-
-    _initTops(){
+    _initTops() {
       // 1.初始化Tops
-      const tops = []
-      let top = 0
-      tops.push(top)
+      const tops = [];
+      let top = 0;
+      tops.push(top);
       // 2.收集
       // 找到左侧菜品li的top坐标 快速定位到foodsUL这个ul
-      let lis = this.$refs.foodsUL.getElementsByClassName('food-list-hook')
+      let lis = this.$refs.foodsUL.getElementsByClassName("food-list-hook");
       Array.prototype.slice.call(lis).forEach(li => {
-        top += li.clientHeight
-        tops.push(top)
+        top += li.clientHeight;
+        tops.push(top);
       });
       // 3.更新数据
-      this.tops = tops
+      this.tops = tops;
       console.log(tops);
     },
 
-   
+    // 点击左侧菜单滑动右侧列表
+    clickMenuItem(index) {
+      // console.log(index)
+      // 得到目标位置的scrollY值
+      const scrollY = this.tops[index];
+      // x坐标和y坐标以及持续的时间
+      this.scrollY = -scrollY;
+      // 平滑滚动右侧菜单
+      this.foodsScroll.scrollTo(0, -scrollY, 500);
+    },
+
+    // 显示点击的food
+    showFood(food){
+      // 设置food
+      this.food = food
+      // 显示food组件 调用子组件的方法 通过ref方法
+      this.$refs.food.toggleShow()
+    }
+  },
+  components: {
+    CartControl,
+    Food
   }
 };
 </script>
