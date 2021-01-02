@@ -11,7 +11,8 @@ import {
   RECEIVE_INFO,
   RECEIVE_GOODS,
   INCREMENT_FOOD_COUNT,
-  DECREMENT_FOOD_COUNT
+  DECREMENT_FOOD_COUNT,
+  CLEAR_CART
 } from "./mutation-types";
 
 // 在这引入接口api中的方法
@@ -106,11 +107,13 @@ export default {
   },
 
   // 异步获取商家评价列表
-  async getShopRatings({ commit }) {
+  async getShopRatings({ commit },callback) {
     const result = await reqShopRatings();
     if (result.code === 0) {
       const ratings = result.data;
       commit(RECEIVE_RATINGS, { ratings });
+      // 如果组件中传递了接收消息的回调函数, 数据更新后, 调用回调通知调用的组件
+      callback && callback()
     }
   },
 
@@ -132,6 +135,12 @@ export default {
     }else{
       commit(DECREMENT_FOOD_COUNT,{food})
     }
+  },
+
+
+  // 同步清空购物车
+  clearCart({commit}){
+    commit(CLEAR_CART)
   }
 
 };
