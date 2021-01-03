@@ -1,9 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../pages/Home/Home'
-import Order from '../pages/Order/Order'
-import Search from '../pages/Search/Search'
-import Personal from '../pages/Personal/Personal'
+
+// import Home from '../pages/Home/Home'
+// import Order from '../pages/Order/Order'
+// import Search from '../pages/Search/Search'
+// import Personal from '../pages/Personal/Personal'
+
+// 实现路由懒加载啊 采取函数形式
+const Home = () => import('../pages/Home/Home')
+const Order = () => import('../pages/Order/Order')
+const Search = () => import('../pages/Search/Search')
+const Personal = () => import('../pages/Personal/Personal')
+
+
 import Login from '../pages/Login/Login'
 import Shop from '../pages/Shop/Shop'
 import ShopGoods from '../pages/Shop/ShopGoods/ShopGoods'
@@ -17,7 +26,7 @@ export default new Router({
   routes: [
     {
       path: '/home',
-      component: Home,
+      component: Home,  //只有当请求资源或者发送请求是才会调用这个路由
       meta:{
         showFooter:true
       }

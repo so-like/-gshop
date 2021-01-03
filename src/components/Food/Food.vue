@@ -2,7 +2,8 @@
   <div class="food" v-show="isShow">
     <div class="food-content">
       <div class="image-header">
-        <img :src="food.image">
+        <!-- 使用图片懒加载 -->
+        <img v-lazy="food.image">
         <p class="foodpanel-desc">{{food.info}}</p>
         <div class="back" @click="toggleShow">
           <i class="iconfont icon-htmal5icon37"></i>

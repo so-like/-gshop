@@ -9,7 +9,8 @@ export default {
   goods: [], // 商品列表
   ratings: [], // 商家评价列表
   info: {}, // 商家信息
-  cartFoods:[] //购物车中食物的列表
+  cartFoods:[], //购物车中食物的列表
+  searchShops:[], //搜索得到的商家列表
 };
 
 //34.49128822747416, 109.46441163037107

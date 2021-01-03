@@ -86,23 +86,41 @@ export default {
   computed: {
     ...mapState(["info"])
   },
-  mounted() {
-    // 创建滑动组件对象
+  methods: {
+    // 将创建滑动块抽象成一个方法
+    _initBScroll(){
+      // 创建滑动组件对象
     new BScroll('.shop-info')
-    // // 获取到ul
-    // const ul = this.$refs.picUL
-    // // li的宽度
-    // const liWidth = 120
-    // const space = 6
-    // console.log(this.info.pics.length)
-    // const count = this.info.pics.length
-    // // 动态计算ul值
-    // ul.style.width = (liWidth + space) * count - space + "px"
+    // 获取到ul
+    const ul = this.$refs.picUL
+    // li的宽度
+    const liWidth = 120
+    const space = 6
+    console.log(this.info.pics.length)
+    const count = this.info.pics.length
+    // 动态计算ul值
+    ul.style.width = (liWidth + space) * count - space + "px"
 
     new BScroll('.pic-wrapper',{
       scrollX:true   //默认为垂直滑动 这里设置为水平滑动
     })
+    }
   },
+  mounted() {
+    // 首先判断info.pics有没有 没有就直接结束
+    if(!this.info.pics){
+      return
+    }
+    // 数据有了就可以创建BScroll对象进行滑动
+    this._initBScroll()
+  },
+  watch:{
+    info(){
+      this.$nextTick(()=>{
+        this._initBScroll()
+      });
+    }
+  }
 };
 </script>
 
@@ -111,7 +129,7 @@ export default {
 
 .shop-info {
   position: absolute;
-  top: 275px;
+  top: 285px;
   bottom: 0;
   left: 0;
   width: 100%;

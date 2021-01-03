@@ -183,7 +183,7 @@ export default {
 .goods {
   display: flex;
   position: absolute;
-  top: 275px;
+  top: 285px;
   bottom: 46px;
   width: 100%;
   background: #fff;

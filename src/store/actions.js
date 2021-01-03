@@ -12,7 +12,8 @@ import {
   RECEIVE_GOODS,
   INCREMENT_FOOD_COUNT,
   DECREMENT_FOOD_COUNT,
-  CLEAR_CART
+  CLEAR_CART,
+  RECEIVE_SEARCH_SHOPS,
 } from "./mutation-types";
 
 // 在这引入接口api中的方法
@@ -24,7 +25,8 @@ import {
   reqLoginOut,
   reqShopInfo,
   reqShopGoods,
-  reqShopRatings
+  reqShopRatings,
+  reqSearchShops
 } from "../api";
 
 export default {
@@ -141,6 +143,18 @@ export default {
   // 同步清空购物车
   clearCart({commit}){
     commit(CLEAR_CART)
-  }
+  },
+
+
+  // 异步获取商家商品列表 接收传过来的函数并在数据更新后调用
+  async searchShops({ commit,state },keyword) {
+    const geohash = state.latitude + "," + state.longitude;
+    const result = await reqSearchShops(geohash,keyword);
+    if (result.code === 0) {
+      const searchShops = result.data;
+      commit(RECEIVE_SEARCH_SHOPS, { searchShops });
+      // 如果组件中传递了接收消息的回调函数, 数据更新后, 调用回调通知调用的组件
+    }
+  },
 
 };
