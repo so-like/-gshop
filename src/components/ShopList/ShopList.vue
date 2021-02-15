@@ -56,7 +56,7 @@ import Star from '../Start/Star'
 export default {
   data() { 
     return {
-      baseImageurl:'https://i2.chuimg.com/'
+      baseImageurl:'https://ww3.sinaimg.cn/bmiddle/'
     }
   },
   computed:{
